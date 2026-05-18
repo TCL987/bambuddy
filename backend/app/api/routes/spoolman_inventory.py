@@ -597,15 +597,66 @@ async def update_spool(
     storage_location = data.storage_location if storage_location_changed else None
 
     color_hex = rgba[:6]
-    async with _translate_spoolman_errors():
-        filament_id = await client.find_or_create_filament(
-            material=material,
-            subtype=subtype or "",
-            brand=brand,
-            color_hex=color_hex,
-            label_weight=label_weight,
-            color_name=color_name,
-        )
+
+    # Resolve which filament this spool should be linked to AFTER the edit.
+    #
+    # The old behaviour was always `find_or_create_filament`, which proliferated
+    # duplicate Spoolman filaments whenever the user changed any field that
+    # made up the match key (material/subtype/brand/color) — every edit minted
+    # a fresh row and orphaned the previous one (#1357 follow-up). To match
+    # internal-mode behaviour ([[feedback_inventory_modes_parity]]: editing a
+    # spool does not proliferate new entities), prefer PATCHing the current
+    # filament in place when it's a singleton.
+    cur_filament_id = cur_filament.get("id")
+    desired_name = f"{material} {subtype}".strip() if subtype else material
+    cur_color_norm = (cur_filament.get("color_hex") or "").upper()[:6]
+    cur_vendor_name = (cur_vendor.get("name") or "").strip()
+    cur_weight_int = int(cur_filament.get("weight") or 0)
+    metadata_unchanged = (
+        cur_filament_id
+        and (cur_filament.get("name") or "").strip() == desired_name
+        and (cur_filament.get("material") or "").upper() == material.upper()
+        and cur_color_norm == color_hex.upper()
+        and cur_vendor_name.lower() == ((brand or "").strip().lower())
+        and cur_weight_int == int(label_weight)
+    )
+
+    if metadata_unchanged:
+        # No filament-side change at all — re-use the existing link, skip
+        # find_or_create entirely so a no-op edit (e.g. just changing
+        # weight_used or note) never even touches the filament catalogue.
+        filament_id = cur_filament_id
+    else:
+        async with _translate_spoolman_errors():
+            shared = await client.is_filament_shared(cur_filament_id, spool_id) if cur_filament_id else False
+        if cur_filament_id and not shared:
+            # Singleton filament — PATCH it in place so the user's edit lands
+            # on the row their spool already points at instead of orphaning it.
+            patch_body: dict = {
+                "name": desired_name,
+                "material": material,
+                "color_hex": color_hex,
+                "weight": float(label_weight),
+            }
+            if brand:
+                vendor_id = await client.find_or_create_vendor(brand)
+                patch_body["vendor_id"] = vendor_id
+            async with _translate_spoolman_errors():
+                await client.patch_filament(cur_filament_id, patch_body)
+            filament_id = cur_filament_id
+        else:
+            # Filament is shared with other spools — PATCHing it in place would
+            # silently rewrite their metadata too. Fall back to find-or-create
+            # so only this spool's link moves.
+            async with _translate_spoolman_errors():
+                filament_id = await client.find_or_create_filament(
+                    material=material,
+                    subtype=subtype or "",
+                    brand=brand,
+                    color_hex=color_hex,
+                    label_weight=label_weight,
+                    color_name=color_name,
+                )
     if not filament_id:
         raise HTTPException(status_code=500, detail="Failed to find or create filament in Spoolman")
 

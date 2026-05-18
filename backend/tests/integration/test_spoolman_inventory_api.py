@@ -67,6 +67,12 @@ def mock_spoolman_client():
     mock_client.update_spool_full = AsyncMock(return_value=SAMPLE_SPOOLMAN_SPOOL)
     mock_client.merge_spool_extra = AsyncMock(return_value=SAMPLE_SPOOLMAN_SPOOL)
     mock_client.find_or_create_filament = AsyncMock(return_value=7)
+    mock_client.find_or_create_vendor = AsyncMock(return_value=3)
+    mock_client.patch_filament = AsyncMock(return_value={"id": 7})
+    # Default to singleton (only this spool uses the filament) so edits
+    # exercise the new in-place-PATCH path; tests that need the shared
+    # branch override this on the fly.
+    mock_client.is_filament_shared = AsyncMock(return_value=False)
     mock_client.ensure_extra_field = AsyncMock(return_value=True)
 
     with (
@@ -322,6 +328,70 @@ class TestSpoolmanInventoryCRUD:
 
         assert response.status_code == 200
         mock_spoolman_client.update_spool_full.assert_called_once()
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    async def test_update_noop_metadata_reuses_filament(
+        self,
+        async_client: AsyncClient,
+        spoolman_settings,
+        mock_spoolman_client,
+    ):
+        """#1357 follow-up: an edit that doesn't touch any filament-shaping
+        field (only weight_used / note / color_name) must NOT hit
+        find_or_create_filament OR patch_filament — the link stays put and
+        the filament catalogue is left alone."""
+        payload = {"note": "just a note change", "weight_used": 50.0}
+        response = await async_client.patch("/api/v1/spoolman/inventory/spools/42", json=payload)
+        assert response.status_code == 200
+        mock_spoolman_client.find_or_create_filament.assert_not_called()
+        mock_spoolman_client.patch_filament.assert_not_called()
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    async def test_update_singleton_filament_patches_in_place(
+        self,
+        async_client: AsyncClient,
+        spoolman_settings,
+        mock_spoolman_client,
+    ):
+        """#1357 follow-up: when the linked filament is only used by the
+        spool being edited (singleton), changing the subtype must PATCH that
+        filament in place — NOT create a new filament and orphan the old
+        one. This is the exact failure the reporter showed: editing Subtype
+        "Red" → "Basic" minted a new "PETG Basic" filament every time.
+        """
+        # Sample filament is "PLA Basic"; flip to "Matte" so the metadata
+        # actually changes and the singleton path engages.
+        payload = {"subtype": "Matte"}
+        response = await async_client.patch("/api/v1/spoolman/inventory/spools/42", json=payload)
+        assert response.status_code == 200
+        # Singleton path: PATCH the existing filament, do NOT find_or_create.
+        mock_spoolman_client.patch_filament.assert_called_once()
+        mock_spoolman_client.find_or_create_filament.assert_not_called()
+        # PATCH targets the spool's current filament (id=7) with the new name.
+        call_args = mock_spoolman_client.patch_filament.call_args
+        assert call_args.args[0] == 7
+        assert call_args.args[1]["name"] == "PLA Matte"
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    async def test_update_shared_filament_falls_back_to_find_or_create(
+        self,
+        async_client: AsyncClient,
+        spoolman_settings,
+        mock_spoolman_client,
+    ):
+        """#1357 follow-up: when the linked filament is shared with another
+        spool, PATCHing in place would silently rewrite the sibling's
+        metadata too. Fall back to find_or_create — only this spool's
+        filament_id moves."""
+        mock_spoolman_client.is_filament_shared.return_value = True
+        payload = {"subtype": "Matte"}
+        response = await async_client.patch("/api/v1/spoolman/inventory/spools/42", json=payload)
+        assert response.status_code == 200
+        mock_spoolman_client.find_or_create_filament.assert_called_once()
+        mock_spoolman_client.patch_filament.assert_not_called()
 
     @pytest.mark.asyncio
     @pytest.mark.integration
