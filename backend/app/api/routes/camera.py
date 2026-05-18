@@ -927,6 +927,41 @@ async def test_camera(
     return result
 
 
+@router.post("/{printer_id}/camera/diagnose")
+async def diagnose_camera_route(
+    printer_id: int,
+    db: AsyncSession = Depends(get_db),
+    _: User | None = RequirePermissionIfAuthEnabled(Permission.CAMERA_VIEW),
+):
+    """Run staged diagnostics for a printer's camera path.
+
+    Returns a structured result the frontend renders inline so users can
+    self-diagnose "connection lost" before opening a ticket. See
+    ``camera_diagnose`` for stage details and the live-stream shortcut.
+    """
+    import time
+
+    from backend.app.services.camera_diagnose import diagnose_camera
+
+    printer = await get_printer_or_404(printer_id, db)
+
+    # Look up live-stream evidence so the diagnostic can short-circuit
+    # instead of fighting a viewer for the printer's single camera slot.
+    has_live = is_stream_active(printer_id)
+    last_ts = _last_frame_times.get(printer_id) if has_live else None
+    live_age = (time.time() - last_ts) if (has_live and last_ts) else None
+
+    result = await diagnose_camera(
+        ip_address=printer.ip_address,
+        access_code=printer.access_code,
+        model=printer.model,
+        printer_id=printer_id,
+        has_live_stream=has_live,
+        live_frame_age_seconds=live_age,
+    )
+    return result.to_dict()
+
+
 @router.get("/{printer_id}/camera/status")
 async def camera_status(
     printer_id: int,

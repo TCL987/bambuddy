@@ -159,6 +159,30 @@ async function request<T>(
   return await response.json();
 }
 
+// Camera diagnostic result (#1395 follow-up). Returned by
+// POST /printers/{id}/camera/diagnose; the frontend modal renders one
+// row per stage and looks up the summary code in i18n for the user-
+// facing remediation hint.
+export interface CameraDiagnoseStage {
+  name: 'tcp_reachable' | 'first_frame' | 'live_stream_active';
+  status: 'ok' | 'failed' | 'skipped';
+  duration_ms: number;
+  code: string | null;
+}
+
+export interface CameraDiagnoseResult {
+  printer_id: number;
+  protocol: 'rtsp' | 'chamber_image';
+  port: number;
+  // 'default' = historical X1/H2 tuning. Anything else = this model has
+  // an override entry in backend/app/services/camera_profiles.py.
+  profile: string;
+  overall_status: 'ok' | 'failed';
+  stages: CameraDiagnoseStage[];
+  // i18n key under `camera.diagnose.summary.*`.
+  summary_code: string;
+}
+
 // Long-lived camera-stream tokens (#1108). The `token` field is populated
 // only on the create response — listing endpoints set it to null because
 // the plaintext value is shown to the user exactly once.
@@ -4976,6 +5000,8 @@ export const api = {
     request<{ success: boolean; message?: string; error?: string }>(`/printers/${printerId}/camera/test`),
   getCameraStatus: (printerId: number) =>
     request<{ active: boolean; stalled: boolean }>(`/printers/${printerId}/camera/status`),
+  diagnoseCamera: (printerId: number) =>
+    request<CameraDiagnoseResult>(`/printers/${printerId}/camera/diagnose`, { method: 'POST' }),
 
   // Plate Detection - Multi-reference calibration (stores up to 5 references per printer)
   checkPlateEmpty: (printerId: number, options?: { useExternal?: boolean; includeDebugImage?: boolean }) => {
