@@ -3536,6 +3536,11 @@ export default {
       bulkTitle: 'Spulen aus den aktuell angezeigten {{count}} zum Etikettieren auswählen',
       noSpoolsTitle: 'Keine Spulen zum Etikettieren',
       error: 'Etiketten konnten nicht erstellt werden: {{msg}}',
+      sortBy: {
+        label: 'Sortieren:',
+        id: 'Nach ID',
+        color: 'Nach Farbe',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',

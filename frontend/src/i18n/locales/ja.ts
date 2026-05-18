@@ -3536,6 +3536,11 @@ export default {
       bulkTitle: '現在表示中の{{count}}件からラベルを印刷するスプールを選択',
       noSpoolsTitle: 'ラベル付けするスプールなし',
       error: 'ラベルを生成できませんでした: {{msg}}',
+      sortBy: {
+        label: '並べ替え:',
+        id: 'ID順',
+        color: '色順',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',

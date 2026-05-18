@@ -3524,6 +3524,11 @@ export default {
       bulkTitle: '從目前顯示的 {{count}} 個線材中選擇要列印標籤的',
       noSpoolsTitle: '沒有要貼標籤的線材',
       error: '無法產生標籤：{{msg}}',
+      sortBy: {
+        label: '排序：',
+        id: '按 ID',
+        color: '按顏色',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',

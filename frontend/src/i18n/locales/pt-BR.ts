@@ -3524,6 +3524,11 @@ export default {
       bulkTitle: 'Escolha bobinas para etiquetar entre as {{count}} exibidas',
       noSpoolsTitle: 'Nenhuma bobina para rotular',
       error: 'Não foi possível gerar etiquetas: {{msg}}',
+      sortBy: {
+        label: 'Ordenar:',
+        id: 'Por ID',
+        color: 'Por cor',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',

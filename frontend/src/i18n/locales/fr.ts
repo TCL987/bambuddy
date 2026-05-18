@@ -3525,6 +3525,11 @@ export default {
       bulkTitle: 'Choisissez les bobines à étiqueter parmi les {{count}} affichées',
       noSpoolsTitle: 'Aucune bobine à étiqueter',
       error: 'Impossible de générer les étiquettes : {{msg}}',
+      sortBy: {
+        label: 'Trier :',
+        id: 'Par ID',
+        color: 'Par couleur',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',

@@ -319,4 +319,64 @@ describe('LabelTemplatePickerModal', () => {
     expect(spoolListScroller!.className).toContain('min-h-0');
     expect(spoolListScroller!.className).not.toMatch(/min-h-\[\d/);
   });
+
+  // #1410: an "ID | colour" sort toggle in the modal must flow through to the
+  // PDF — the backend (labels.py) prints in the order it receives spool_ids,
+  // so the modal's "submit in ID order" default was forcing every PDF to
+  // appear in spool-number order regardless of user choice. Toggling to
+  // colour mode must reorder both the visible list AND the payload so the
+  // printed sheet groups colours together.
+  it('sorts the submit payload by HSL hue when sort mode is "By colour" (#1410)', async () => {
+    vi.mocked(api.printSpoolLabels).mockResolvedValue(PDF_BLOB);
+    render(
+      <LabelTemplatePickerModal
+        isOpen={true}
+        onClose={vi.fn()}
+        availableSpools={SPOOLS}
+        initialSelectedIds={[1, 2, 3, 4]}  // Red / Blue / Black / Ivory all picked
+        spoolmanMode={false}
+      />,
+    );
+
+    // Default is ID-sorted; flip to colour.
+    fireEvent.click(screen.getByRole('button', { name: 'By colour' }));
+    fireEvent.click(screen.getByText(/Box label \(62 × 29 mm\)/i));
+
+    await waitFor(() => {
+      // Expected colour-sort order for the SPOOLS fixture:
+      //   Red    (1) — hue 0°   — chromatic
+      //   Ivory  (4) — hue ≈34° — chromatic
+      //   Blue   (2) — hue 240° — chromatic
+      //   Black  (3) — saturation ≈0 → neutrals bucket, lightness 0 → last
+      // Rainbow first, then neutrals (dark→light) per design choice for #1410.
+      expect(api.printSpoolLabels).toHaveBeenCalledWith({
+        spool_ids: [1, 4, 2, 3],
+        template: 'box_62x29',
+      });
+    });
+  });
+
+  it('keeps ID-order submission by default (#1410 regression guard)', async () => {
+    // Adding the sort toggle must NOT change the default behaviour — IDs go
+    // in ascending order unless the user explicitly clicks "By colour".
+    vi.mocked(api.printSpoolLabels).mockResolvedValue(PDF_BLOB);
+    render(
+      <LabelTemplatePickerModal
+        isOpen={true}
+        onClose={vi.fn()}
+        availableSpools={SPOOLS}
+        initialSelectedIds={[1, 2, 3, 4]}
+        spoolmanMode={false}
+      />,
+    );
+
+    fireEvent.click(screen.getByText(/Box label \(40 × 30 mm\)/i));
+
+    await waitFor(() => {
+      expect(api.printSpoolLabels).toHaveBeenCalledWith({
+        spool_ids: [1, 2, 3, 4],
+        template: 'box_40x30',
+      });
+    });
+  });
 });

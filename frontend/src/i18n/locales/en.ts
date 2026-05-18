@@ -3539,6 +3539,11 @@ export default {
       bulkTitle: 'Pick spools to print labels for from the {{count}} currently shown',
       noSpoolsTitle: 'No spools to label',
       error: 'Could not generate labels: {{msg}}',
+      sortBy: {
+        label: 'Sort:',
+        id: 'By ID',
+        color: 'By colour',
+      },
       templates: {
         ams: {
           label: 'AMS holder (30 × 15 mm)',
