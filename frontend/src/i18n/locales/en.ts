@@ -2837,6 +2837,7 @@ export default {
       importing: 'Importing...',
       search: 'Search local presets...',
       noPresets: 'No local presets yet',
+      noSearchResults: 'No presets match your search',
       badge: 'Local',
       edit: 'Edit',
       delete: 'Delete',

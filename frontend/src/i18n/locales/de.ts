@@ -2834,6 +2834,7 @@ export default {
       importing: 'Importiere...',
       search: 'Lokale Voreinstellungen durchsuchen...',
       noPresets: 'Noch keine lokalen Voreinstellungen',
+      noSearchResults: 'Keine Voreinstellungen entsprechen deiner Suche',
       badge: 'Lokal',
       edit: 'Bearbeiten',
       delete: 'Löschen',

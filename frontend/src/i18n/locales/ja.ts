@@ -2834,6 +2834,7 @@ export default {
       importing: 'インポート中...',
       search: 'ローカルプリセットを検索...',
       noPresets: 'ローカルプリセットがまだありません',
+      noSearchResults: '検索に一致するプリセットがありません',
       badge: 'ローカル',
       edit: '編集',
       delete: '削除',

@@ -2822,6 +2822,7 @@ export default {
       importing: '匯入中...',
       search: '搜尋本機預設...',
       noPresets: '尚無本機預設',
+      noSearchResults: '沒有符合搜尋的預設',
       badge: '本機',
       edit: '編輯',
       delete: '刪除',

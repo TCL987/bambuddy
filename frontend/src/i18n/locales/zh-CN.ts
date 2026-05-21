@@ -2822,6 +2822,7 @@ export default {
       importing: '导入中...',
       search: '搜索本地预设...',
       noPresets: '暂无本地预设',
+      noSearchResults: '没有与搜索匹配的预设',
       badge: '本地',
       edit: '编辑',
       delete: '删除',

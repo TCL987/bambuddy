@@ -2822,6 +2822,7 @@ export default {
       importing: 'Importando...',
       search: 'Pesquisar presets locais...',
       noPresets: 'Nenhum preset local ainda',
+      noSearchResults: 'Nenhum preset corresponde à sua busca',
       badge: 'Local',
       edit: 'Editar',
       delete: 'Excluir',

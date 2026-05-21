@@ -2823,6 +2823,7 @@ export default {
       importing: 'Importation...',
       search: 'Chercher un preset...',
       noPresets: 'Aucun preset local',
+      noSearchResults: 'Aucun preset ne correspond à votre recherche',
       badge: 'Local',
       edit: 'Modifier',
       delete: 'Supprimer',
