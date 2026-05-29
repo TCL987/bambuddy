@@ -644,9 +644,24 @@ def _extract_filament_data_from_mqtt(data: dict, ams_mapping: list[int] | None =
     entries). When supplied, only the slots actually consumed by this
     print contribute. Without it the function falls back to every loaded
     AMS slot — less accurate but still useful.
+
+    Accepts both the raw inner payload (``{"ams": {"ams": [...]}, ...}``)
+    that the unit tests pass directly, AND the on_print_start callback
+    shape (``{"raw_data": {"ams": {"ams": [...]}, ...}, ...}``) the
+    bambu_mqtt service hands to main.py at runtime. The original
+    ``_extract_filament_data_from_mqtt(data)`` shipped in #1533 only
+    handled the inner shape and silently returned ``{}`` for every real
+    print start, leaving fallback archives' filament fields NULL — the
+    exact regression the fix was meant to close. Reported with a log
+    proving the AMS state was right there at
+    ``data["raw_data"]["ams"]["ams"][0]["tray"][0]`` (#1533 follow-up).
     """
     result: dict[str, str] = {}
-    ams_root = (data or {}).get("ams") or {}
+    # Look at the on_print_start wrapper first, then the inner shape.
+    raw_data = (data or {}).get("raw_data")
+    ams_root = (raw_data or {}).get("ams") if isinstance(raw_data, dict) else None
+    if not isinstance(ams_root, dict):
+        ams_root = (data or {}).get("ams") or {}
     ams_units = ams_root.get("ams") if isinstance(ams_root, dict) else None
     if not isinstance(ams_units, list) or not ams_units:
         return result
