@@ -5796,8 +5796,13 @@ export const api = {
   // Unified slicer-preset listing — cloud + local + standard, deduped by name.
   // Used by the SliceModal; see UnifiedPresetsResponse for the shape and
   // backend/app/api/routes/slicer_presets.py for the priority rules.
-  getSlicerPresets: () =>
-    request<UnifiedPresetsResponse>('/slicer/presets'),
+  // `refresh` bypasses the in-process cloud and bundled-preset caches on the
+  // backend; the SliceModal's Refresh button passes true so a preset deleted
+  // in Bambu Studio or Bambu Handy shows up without the 5-min TTL wait.
+  getSlicerPresets: (options?: { refresh?: boolean }) =>
+    request<UnifiedPresetsResponse>(
+      options?.refresh ? '/slicer/presets?refresh=true' : '/slicer/presets',
+    ),
 
   // Canonical Bambu printer-model registry — "Bambu Lab <model>" → short code.
   // Single source of truth shared with backend (PRINTER_MODEL_MAP); the

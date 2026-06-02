@@ -3469,6 +3469,8 @@ export default {
     noPresetsForSlot: '无可用预设',
     otherPrinters: '其他打印机',
     presetsLoadFailed: '加载预设失败。请先打开设置 → 配置文件以导入。',
+    refreshPresets: '刷新',
+    refreshPresetsTitle: '刷新预设 — 获取最新的云端和打包配置列表（在 Bambu Studio 或 Bambu Handy 中删除预设后使用）',
     allPresetsRequired: '必须选择所有预设',
     bundle: '切片器套装',
     bundleNone: '— 无（单独选择预设）—',

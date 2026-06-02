@@ -3484,6 +3484,8 @@ export default {
     noPresetsForSlot: 'No hay preajustes disponibles',
     otherPrinters: 'Otras impresoras',
     presetsLoadFailed: 'Error al cargar los preajustes. Abra Ajustes → Perfiles para importarlos primero.',
+    refreshPresets: 'Actualizar',
+    refreshPresetsTitle: 'Actualizar preajustes — recuperar los listados más recientes de la nube y los paquetes (úselo tras eliminar un preajuste en Bambu Studio o Bambu Handy)',
     allPresetsRequired: 'Deben seleccionarse todos los preajustes',
     bundle: 'Paquete del laminador',
     bundleNone: '— Ninguno (elegir preajustes individualmente) —',

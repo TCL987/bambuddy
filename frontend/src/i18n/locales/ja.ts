@@ -3481,6 +3481,8 @@ export default {
     noPresetsForSlot: 'プリセットなし',
     otherPrinters: '他のプリンター',
     presetsLoadFailed: 'プリセットの読み込みに失敗。先に設定 → プロファイルからインポートしてください。',
+    refreshPresets: '再読み込み',
+    refreshPresetsTitle: 'プリセットを再取得 — クラウドとバンドルの最新リストを取得します（Bambu Studio または Bambu Handy でプリセットを削除した後にお使いください）',
     allPresetsRequired: 'すべてのプリセットを選択する必要があります',
     bundle: 'スライサーバンドル',
     bundleNone: '— なし（プリセットを個別に選択）—',

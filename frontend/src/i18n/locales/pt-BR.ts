@@ -3469,6 +3469,8 @@ export default {
     noPresetsForSlot: 'Nenhuma predefinição disponível',
     otherPrinters: 'Outras impressoras',
     presetsLoadFailed: 'Falha ao carregar predefinições. Abra Configurações → Perfis para importá-las primeiro.',
+    refreshPresets: 'Atualizar',
+    refreshPresetsTitle: 'Atualizar predefinições — buscar as listagens mais recentes da nuvem e dos pacotes (use após excluir uma predefinição no Bambu Studio ou Bambu Handy)',
     allPresetsRequired: 'Todas as predefinições devem ser selecionadas',
     bundle: 'Pacote do fatiador',
     bundleNone: '— Nenhum (escolher predefinições individualmente) —',

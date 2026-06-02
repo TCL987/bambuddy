@@ -3484,6 +3484,8 @@ export default {
     noPresetsForSlot: 'No presets available',
     otherPrinters: 'Other printers',
     presetsLoadFailed: 'Failed to load presets. Open Settings → Profiles to import them first.',
+    refreshPresets: 'Refresh',
+    refreshPresetsTitle: 'Refresh presets — fetch the latest cloud and bundled listings (use after deleting a preset in Bambu Studio or Bambu Handy)',
     allPresetsRequired: 'All presets must be selected',
     bundle: 'Slicer bundle',
     bundleNone: '— None (pick presets individually) —',

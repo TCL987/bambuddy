@@ -3481,6 +3481,8 @@ export default {
     noPresetsForSlot: 'Keine Profile verfügbar',
     otherPrinters: 'Andere Drucker',
     presetsLoadFailed: 'Profile konnten nicht geladen werden. Importiere sie zuerst unter Einstellungen → Profile.',
+    refreshPresets: 'Aktualisieren',
+    refreshPresetsTitle: 'Profile neu laden — die aktuellen Cloud- und Bundle-Listen abrufen (nach dem Löschen eines Profils in Bambu Studio oder Bambu Handy verwenden)',
     allPresetsRequired: 'Alle Profile müssen ausgewählt sein',
     bundle: 'Slicer-Bundle',
     bundleNone: '— Keines (Profile einzeln auswählen) —',
