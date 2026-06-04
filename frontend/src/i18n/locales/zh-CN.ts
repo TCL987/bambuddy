@@ -4107,7 +4107,7 @@ export default {
     scheduledBackupFailed: '备份失败',
     nextBackup: '下次备份',
     backupSize: '大小',
-    utc: 'UTC',
+    localTimeHint: '本地时间 ({{tz}})',
     defaultPathLabel: '默认：',
 
     // Category labels

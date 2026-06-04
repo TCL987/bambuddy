@@ -4094,7 +4094,7 @@ export default {
     scheduledBackupFailed: 'Yedekleme başarısız',
     nextBackup: 'Sonraki yedek',
     backupSize: 'Boyut',
-    utc: 'UTC',
+    localTimeHint: 'Yerel saat ({{tz}})',
     defaultPathLabel: 'Varsayılan:',
 
     categories: {

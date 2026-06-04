@@ -2279,6 +2279,7 @@ export interface LocalBackupStatus {
   last_status: string | null;
   last_message: string | null;
   next_run: string | null;
+  timezone: string;
 }
 
 export interface LocalBackupFile {

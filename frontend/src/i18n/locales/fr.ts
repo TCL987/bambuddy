@@ -4108,7 +4108,7 @@ export default {
     scheduledBackupFailed: 'Échec de la sauvegarde',
     nextBackup: 'Prochaine sauvegarde',
     backupSize: 'Taille',
-    utc: 'UTC',
+    localTimeHint: 'Heure locale ({{tz}})',
     defaultPathLabel: 'Par défaut :',
 
     // Category labels

@@ -3878,7 +3878,7 @@ export default {
     scheduledBackupFailed: '백업 실패',
     nextBackup: '다음 백업',
     backupSize: '크기',
-    utc: 'UTC',
+    localTimeHint: '현지 시간 ({{tz}})',
     defaultPathLabel: '기본값:',
     categories: {
       settings: '설정',

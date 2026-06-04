@@ -4119,7 +4119,7 @@ export default {
     scheduledBackupFailed: 'バックアップに失敗',
     nextBackup: '次回バックアップ',
     backupSize: 'サイズ',
-    utc: 'UTC',
+    localTimeHint: '現地時刻 ({{tz}})',
     defaultPathLabel: 'デフォルト:',
 
     // Category labels
