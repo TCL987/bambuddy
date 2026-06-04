@@ -45,6 +45,7 @@ from backend.app.api.routes import (
     notification_templates,
     notifications,
     obico,
+    orca_cloud,
     pending_uploads,
     print_log,
     print_queue,
@@ -5777,6 +5778,7 @@ app.include_router(inventory.router, prefix=app_settings.api_prefix)
 app.include_router(labels.router, prefix=app_settings.api_prefix)
 app.include_router(settings_routes.router, prefix=app_settings.api_prefix)
 app.include_router(cloud.router, prefix=app_settings.api_prefix)
+app.include_router(orca_cloud.router, prefix=app_settings.api_prefix)
 app.include_router(local_presets.router, prefix=app_settings.api_prefix)
 app.include_router(smart_plugs.router, prefix=app_settings.api_prefix)
 app.include_router(print_log.router, prefix=app_settings.api_prefix)
