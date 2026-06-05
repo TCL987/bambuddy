@@ -2159,7 +2159,7 @@ export default {
     autoArchivePrints: 'Baskıları otomatik arşivle',
     autoArchiveDescription: 'Baskılar tamamlandığında 3MF dosyalarını otomatik olarak kaydet',
     saveThumbnailsDescription: '3MF dosyalarından önizleme görüntülerini çıkar ve kaydet',
-    captureFinishPhotoDescription: 'Baskı tamamlandığında yazıcı kamerasından bir fotoğraf çek',
+    captureFinishPhotoDescription: 'Baskı tamamlandığında yazıcı kamerasından bir fotoğraf çek. Bambuddy, baskı sırasında kısa bir zaman atlamalı kayıt yapar, böylece fotoğraf tabla inmeden önceki andan alınabilir. Bu baskı için zaman atlamalı kaydı etkinleştirdiyseniz dosya saklanır, aksi takdirde fotoğraf çekildikten sonra otomatik olarak silinir.',
     ffmpegNotInstalled: 'ffmpeg yüklü değil',
     ffmpegRequired: 'Kamera yakalama ffmpeg gerektirir. <brew>brew install ffmpeg</brew> (macOS) veya <apt>apt install ffmpeg</apt> (Linux) ile yükleyin.',
     // Kamera

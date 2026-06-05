@@ -2142,6 +2142,22 @@ class PrintScheduler:
         pre_subtask_id = getattr(pre_status, "subtask_id", None) if pre_status else None
         pre_gcode_file = getattr(pre_status, "gcode_file", None) if pre_status else None
 
+        # #1397: force timelapse on when capture_finish_photo is enabled so
+        # the finish-photo extractor has something to pull from. Same override
+        # semantics as background_dispatch.py — both queue paths must apply
+        # the same rule or queued prints slip through without a finish photo.
+        # When archive_print failed (library_file path, line 1968 except), we
+        # have no archive to mark — fall back to the literal user choice; the
+        # downstream finish-photo path can't run without an archive anyway.
+        if archive is not None:
+            from backend.app.services.background_dispatch import resolve_effective_timelapse
+
+            effective_timelapse = await resolve_effective_timelapse(
+                db, archive, user_wanted_timelapse=bool(item.timelapse)
+            )
+        else:
+            effective_timelapse = bool(item.timelapse)
+
         # Start the print with AMS mapping, plate_id and print options
         started = printer_manager.start_print(
             item.printer_id,
@@ -2152,7 +2168,7 @@ class PrintScheduler:
             flow_cali=item.flow_cali,
             vibration_cali=item.vibration_cali,
             layer_inspect=item.layer_inspect,
-            timelapse=item.timelapse,
+            timelapse=effective_timelapse,
             use_ams=item.use_ams,
         )
 

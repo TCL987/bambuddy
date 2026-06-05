@@ -2040,6 +2040,19 @@ async def run_migrations(conn):
         "CREATE INDEX IF NOT EXISTS ix_print_archives_deleted_at ON print_archives (deleted_at)",
     )
 
+    # Migration: Add bambuddy_forced_timelapse to print_archives (#1397)
+    # Tracks prints where Bambuddy forced the firmware to record a timelapse
+    # so the finish-photo extractor could pull the post-park-pre-drop frame.
+    # The cleanup path uses this to delete the timelapse both locally and on
+    # the printer's SD after extraction — the user didn't opt in to a
+    # timelapse recording. Postgres rejects `DEFAULT 0` for BOOLEAN; SQLite
+    # accepts both 0/FALSE — branch the literal.
+    _bool_false_literal = "0" if is_sqlite() else "FALSE"
+    await _safe_execute(
+        conn,
+        f"ALTER TABLE print_archives ADD COLUMN bambuddy_forced_timelapse BOOLEAN DEFAULT {_bool_false_literal}",
+    )
+
     # Migration: Create smart_plug_energy_snapshots table (#941)
     # Hourly snapshots of each plug's lifetime counter, so date-range queries in
     # "total consumption" energy mode can compute (last - first) deltas.

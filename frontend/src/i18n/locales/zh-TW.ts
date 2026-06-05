@@ -2154,7 +2154,7 @@ export default {
     autoArchivePrints: '自動歸檔列印',
     autoArchiveDescription: '列印完成時自動儲存3MF檔案',
     saveThumbnailsDescription: '從3MF檔案中提取並儲存預覽影像',
-    captureFinishPhotoDescription: '列印完成時從印表機攝影機拍照',
+    captureFinishPhotoDescription: '列印完成時從印表機攝影機拍照。Bambuddy 會在列印期間錄製一段短縮時攝影，以便從熱床下降前的瞬間取得照片；如果您為本次列印啟用了縮時攝影，檔案將保留，否則會在拍照完成後自動刪除。',
     ffmpegNotInstalled: '未安裝ffmpeg',
     ffmpegRequired: '攝影機捕獲需要ffmpeg。透過 <brew>brew install ffmpeg</brew>（macOS）或 <apt>apt install ffmpeg</apt>（Linux）安裝。',
     camera: '攝影機',

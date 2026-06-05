@@ -2159,7 +2159,7 @@ export default {
     autoArchivePrints: 'Archivar impresiones automáticamente',
     autoArchiveDescription: 'Guardar automáticamente los archivos 3MF cuando se completan las impresiones',
     saveThumbnailsDescription: 'Extraer y guardar imágenes de vista previa de los archivos 3MF',
-    captureFinishPhotoDescription: 'Tomar una foto desde la cámara de la impresora cuando se completa la impresión',
+    captureFinishPhotoDescription: 'Tomar una foto desde la cámara de la impresora cuando se completa la impresión. Bambuddy graba un breve timelapse durante la impresión para que la foto pueda obtenerse del momento previo al descenso de la cama; el archivo del timelapse se conserva si activaste el timelapse para esta impresión, de lo contrario se elimina automáticamente tras capturar la foto.',
     ffmpegNotInstalled: 'ffmpeg no instalado',
     ffmpegRequired: 'La captura de cámara requiere ffmpeg. Instálelo mediante <brew>brew install ffmpeg</brew> (macOS) o <apt>apt install ffmpeg</apt> (Linux).',
     // Camera

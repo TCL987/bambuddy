@@ -2156,7 +2156,7 @@ export default {
     autoArchivePrints: 'Drucke automatisch archivieren',
     autoArchiveDescription: '3MF-Dateien automatisch speichern, wenn Drucke abgeschlossen sind',
     saveThumbnailsDescription: 'Vorschaubilder aus 3MF-Dateien extrahieren und speichern',
-    captureFinishPhotoDescription: 'Foto von der Druckerkamera aufnehmen, wenn der Druck abgeschlossen ist',
+    captureFinishPhotoDescription: 'Foto von der Druckerkamera aufnehmen, wenn der Druck abgeschlossen ist. Bambuddy zeichnet während des Drucks einen kurzen Zeitraffer auf, damit das Foto aus dem Moment vor dem Absenken der Druckplatte stammen kann. Die Zeitraffer-Datei bleibt erhalten, wenn du den Zeitraffer für diesen Druck aktiviert hast, andernfalls wird sie nach Aufnahme des Fotos automatisch gelöscht.',
     ffmpegNotInstalled: 'ffmpeg nicht installiert',
     ffmpegRequired: 'Kameraaufnahme benötigt ffmpeg. Installieren über <brew>brew install ffmpeg</brew> (macOS) oder <apt>apt install ffmpeg</apt> (Linux).',
     // Camera

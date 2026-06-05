@@ -2159,7 +2159,7 @@ export default {
     autoArchivePrints: 'Auto-archive prints',
     autoArchiveDescription: 'Automatically save 3MF files when prints complete',
     saveThumbnailsDescription: 'Extract and save preview images from 3MF files',
-    captureFinishPhotoDescription: 'Take a photo from printer camera when print completes',
+    captureFinishPhotoDescription: 'Take a photo from printer camera when print completes. Bambuddy records a brief timelapse during the print so the photo can be sourced from the moment before the bed drops; the timelapse file is kept if you enabled timelapse for this print, otherwise it is deleted automatically after the photo is captured.',
     ffmpegNotInstalled: 'ffmpeg not installed',
     ffmpegRequired: 'Camera capture requires ffmpeg. Install it via <brew>brew install ffmpeg</brew> (macOS) or <apt>apt install ffmpeg</apt> (Linux).',
     // Camera
